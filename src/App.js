@@ -9,6 +9,7 @@ class App extends Component {
         super(props);
         this.state = {
             data: [],
+            numbers: [5,10,15,28,24,11,10,14,36]
         }
     }
 
@@ -18,7 +19,19 @@ class App extends Component {
                 const {data} = res.data;
                 this.setState({data});
             })
+        this.max();
     }
+
+    max = () => {
+        const {numbers} = this.state;
+        let max = numbers[0];
+        for (let i = 0; i < numbers.length; ++i) {
+            if (numbers[i] > max) {
+                max = numbers[i];
+            }
+        }
+        console.log(max)
+    };
 
     render() {
         const {data} = this.state;
@@ -88,7 +101,7 @@ class App extends Component {
                     {data?.map(d => <li key={d._id} className="Container">
                             <div className="infoContainer">
                                 <img width={100} height={100} src={d.picture} alt={`img_${d.id}`}/>
-                                <span style={{backgroundColor: d.isActive ? 'green' : 'red'}}>.</span>
+                                <span className="active" style={{backgroundColor: d.isActive ? 'green' : 'red'}}>.</span>
                                 <p>first name: {d.name.first}</p>
                                 <p>last name: {d.name.last}</p>
                                 <p>Company: {d.company}</p>
