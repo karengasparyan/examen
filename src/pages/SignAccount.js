@@ -14,18 +14,18 @@ class SignIn extends Component {
 
     render() {
         const {user} = this.props;
-
+      console.log(user.picture)
         return (
             <WrapperSign>
                 <p>{user.first_name}</p>
                 <p>{user.last_name}</p>
                 <p>{user.email}</p>
-                <div>{user?.picture?.map(i=> <img
-                    key={_.uniqueId(user._id)}
-                    src={`http://localhost:4000/userImage/${user._id}/${i}`}
-                    alt="image" />)}</div>
+              {/*<div>{user?.picture?.map(i => <img*/}
+              {/*    key={_.uniqueId(user._id)}*/}
+              {/*    src={`http://localhost:4000/userImage/${user._id}/${i}`}*/}
+              {/*    alt="image" />)}</div>*/}
+                <img src={`http://localhost:4000/userImage/${user._id}/${user.picture[0]}`} alt={user.picture[0]}/>
                 <p>{user.phone}</p>
-                <p>{user.password}</p>
                 <p>{user.age}</p>
                 <button onClick={this.exitAccount}>EXIT</button>
             </WrapperSign>

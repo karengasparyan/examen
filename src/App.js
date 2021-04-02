@@ -7,7 +7,6 @@ import SignUp from "./pages/SignUp";
 
 
 class App extends Component {
-
     render() {
         return (
             <BrowserRouter>

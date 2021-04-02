@@ -2,9 +2,9 @@ import axios from 'axios';
 import {serialize} from 'object-to-formdata';
 import Account from './helpers/Account';
 
-const {REACT_APP_API_URL} = process.env;
+const REACT_APP_API_URL = 'http://localhost:4000';
 const api = axios.create({
-  baseURL: 'http://localhost:4000',
+  baseURL: REACT_APP_API_URL,
 });
 
 api.interceptors.request.use((config) => {
@@ -25,11 +25,11 @@ api.interceptors.response.use((r) => r, (e) => {
 class Api {
 
   static signIn(email, password) {
-    return api.post('http://localhost:4000/users/sign-in', { email, password });
+    return api.post('/users/sign-in', { email, password });
   }
 
-  static signUp(requestData) {
-    return api.post('http://localhost:4000/users/sign-up',{...requestData});
+  static signUp(file, requestData) {
+    return api.post('/users/sign-up',serialize({file, ...requestData}));
   }
 
   // static uploadImage(file, userId) {
@@ -44,11 +44,7 @@ class Api {
   // }
 
   static uploadImage(file, userId) {
-    const formData = new FormData();
-
-    formData.append('File', file.FileList);
-    formData.append('userId', userId);
-    return api.post('http://localhost:4000/users/upload-image', formData );
+    return api.post('/users/upload-image', serialize({file, userId}));
   }
 
 }

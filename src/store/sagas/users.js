@@ -31,8 +31,8 @@ function* signIn(action) {
 
 function* signUp(action) {
   try {
-    const { requestData } = action.payload;
-    const { data } = yield call(Api.signUp, requestData);
+    const { file, requestData } = action.payload;
+    const { data } = yield call(Api.signUp, file, requestData);
     yield put({
       type: SIGN_UP_SUCCESS,
       payload: { data },

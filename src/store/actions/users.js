@@ -13,10 +13,10 @@ export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAIL = 'SIGN_UP_FAIL';
 
-export function signUpRequest(requestData, cb) {
+export function signUpRequest(file, requestData, cb) {
   return {
     type: SIGN_UP_REQUEST,
-    payload: { requestData, cb },
+    payload: { file, requestData, cb },
   };
 }
 
