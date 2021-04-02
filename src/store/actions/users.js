@@ -8,3 +8,25 @@ export function signInRequest(email, password) {
     payload: { email, password },
   };
 }
+
+export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
+export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
+export const SIGN_UP_FAIL = 'SIGN_UP_FAIL';
+
+export function signUpRequest(requestData, cb) {
+  return {
+    type: SIGN_UP_REQUEST,
+    payload: { requestData, cb },
+  };
+}
+
+export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
+export const UPLOAD_IMAGE_SUCCESS = 'UPLOAD_IMAGE_SUCCESS';
+export const UPLOAD_IMAGE_FAIL = 'UPLOAD_IMAGE_FAIL';
+
+export function uploadImageRequest(files, userId) {
+  return {
+    type: UPLOAD_IMAGE_REQUEST,
+    payload: { files, userId },
+  };
+}

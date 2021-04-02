@@ -7,11 +7,11 @@ class Account {
     localStorage.setItem('token', token);
   }
 
-  static set(data) {
+  static setAccount(data) {
     localStorage.setItem('account', JSON.stringify(data));
   }
 
-  static get() {
+  static getAccount() {
     let data;
     try {
       data = JSON.parse(localStorage.getItem('account'));
@@ -23,7 +23,7 @@ class Account {
 
   static delete() {
     localStorage.removeItem('token');
-    // localStorage.removeItem('account');
+    localStorage.removeItem('account');
   }
 }
 
