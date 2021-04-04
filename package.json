@@ -9,6 +9,8 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "lodash": "^4.17.21",
+    "memoize-one": "^5.1.1",
+    "node-sass": "^5.0.0",
     "object-to-formdata": "^4.1.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",

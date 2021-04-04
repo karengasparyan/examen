@@ -20,12 +20,18 @@ function* signIn(action) {
       type: SIGN_IN_SUCCESS,
       payload: { data },
     });
+    if (action.payload.cb) {
+      action.payload.cb(null, data)
+    }
   } catch (e) {
     yield put({
       type: SIGN_IN_FAIL,
       message: e.message,
       payload: { data: e.response?.data || {} },
     });
+    if (action.payload.cb) {
+      action.payload.cb(e, null)
+    }
   }
 }
 
@@ -41,7 +47,6 @@ function* signUp(action) {
       action.payload.cb(null, data)
     }
   } catch (e) {
-    console.error(e);
     yield put({
       type: SIGN_UP_FAIL,
       message: e.message,
@@ -65,7 +70,6 @@ function* uploadImage(action) {
       action.payload.cb(null, data)
     }
   } catch (e) {
-    console.error(e);
     yield put({
       type: UPLOAD_IMAGE_FAIL,
       message: e.message,
