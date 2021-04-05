@@ -32,6 +32,10 @@ class Api {
     return api.post('/users/sign-up',serialize({file, ...requestData}));
   }
 
+  static addEvent(file, requestData) {
+    return api.post('/events/create',serialize({file, ...requestData}));
+  }
+
   // static uploadImage(file, userId) {
   //   let formData = new FormData();
   //

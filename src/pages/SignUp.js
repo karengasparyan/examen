@@ -205,7 +205,13 @@ class SignUp extends Component {
           />
           <p className="errors">{errors.file}</p>
           <button type='submit'>sign in</button>
-          <p className="errors">{error}</p>
+          <p className="errors">{error.last_name}</p>
+          <p className="errors">{error.first_name}</p>
+          <p className="errors">{error.email}</p>
+          <p className="errors">{error.phone}</p>
+          <p className="errors">{error.age}</p>
+          <p className="errors">{error.password}</p>
+          <p className="errors">{error.repeatPassword}</p>
         </form>
       </>
     );
