@@ -46,9 +46,9 @@ class SignIn extends Component {
         this.props.signInRequest(values.email, values.password, async (error, data) => {
             if (error) {
                 if (_.isEmpty(values)) {
-                    errors.email = 'this is a required field'
-                    errors.password = 'this is a required field'
-                    this.setState({errors})
+                    errors.email = this.props.error.email;
+                    errors.password = this.props.error.password;
+                    this.setState({errors});
                 }
                 return;
             }
@@ -87,7 +87,8 @@ class SignIn extends Component {
                     />
                     <p className="errors">{errors.password}</p>
                     <button type='submit'>sign in</button>
-                    <p className="errors">{error}</p>
+                    <p className="errors">{error.email}</p>
+                    <p className="errors">{error.password}</p>
                 </form>
             </>
         );

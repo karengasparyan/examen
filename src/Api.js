@@ -36,6 +36,27 @@ class Api {
     return api.post('/events/create',serialize({file, ...requestData}));
   }
 
+  static updateEvent(file, requestData) {
+    console.log(4444444444444444,requestData)
+    return api.post('/events/update',serialize({file, ...requestData}));
+  }
+
+  static deleteEvent(userId, eventId) {
+    return api.post('/events/delete',{userId, eventId});
+  }
+
+  static allMyEvent(userId, query, page) {
+    return api.post('/events/all-my',{userId, query, page});
+  }
+
+  static allEvent(query, page) {
+    return api.post('/events/all',{query, page});
+  }
+
+  static singleEvent(eventId) {
+    return api.post('/events/single-event',{eventId});
+  }
+
   // static uploadImage(file, userId) {
   //   let formData = new FormData();
   //

@@ -8,3 +8,58 @@ export function addEventRequest(file, requestData, cb) {
     payload: { file, requestData, cb },
   };
 }
+
+export const UPDATE_EVENT_REQUEST = 'UPDATE_EVENT_REQUEST';
+export const UPDATE_EVENT_SUCCESS = 'UPDATE_EVENT_SUCCESS';
+export const UPDATE_EVENT_FAIL = 'UPDATE_EVENT_FAIL';
+
+export function updateEventRequest(file, requestData, cb) {
+  return {
+    type: UPDATE_EVENT_REQUEST,
+    payload: { file, requestData, cb },
+  };
+}
+
+export const ALL_MY_EVENT_REQUEST = 'ALL_MY_EVENT_REQUEST';
+export const ALL_MY_EVENT_SUCCESS = 'ALL_MY_EVENT_SUCCESS';
+export const ALL_MY_EVENT_FAIL = 'ALL_MY_EVENT_FAIL';
+
+export function allMyEventRequest(userId, query, page) {
+  return {
+    type: ALL_MY_EVENT_REQUEST,
+    payload: { userId, query, page },
+  };
+}
+
+export const ALL_EVENT_REQUEST = 'ALL_EVENT_REQUEST';
+export const ALL_EVENT_SUCCESS = 'ALL_EVENT_SUCCESS';
+export const ALL_EVENT_FAIL = 'ALL_EVENT_FAIL';
+
+export function allEventRequest( query, page) {
+  return {
+    type: ALL_EVENT_REQUEST,
+    payload: { query, page },
+  };
+}
+
+export const DELETE_EVENT_REQUEST = 'DELETE_EVENT_REQUEST';
+export const DELETE_EVENT_SUCCESS = 'DELETE_EVENT_SUCCESS';
+export const DELETE_EVENT_FAIL = 'DELETE_EVENT_FAIL';
+
+export function deleteEventRequest(userId, eventId, cb) {
+  return {
+    type: DELETE_EVENT_REQUEST,
+    payload: { userId, eventId, cb },
+  };
+}
+
+export const SINGLE_EVENT_REQUEST = 'SINGLE_EVENT_REQUEST';
+export const SINGLE_EVENT_SUCCESS = 'SINGLE_EVENT_SUCCESS';
+export const SINGLE_EVENT_FAIL = 'SINGLE_EVENT_FAIL';
+
+export function singleEventRequest(eventId, cb) {
+  return {
+    type: SINGLE_EVENT_REQUEST,
+    payload: { eventId, cb },
+  };
+}

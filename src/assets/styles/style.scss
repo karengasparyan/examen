@@ -3,3 +3,44 @@
   font-size: 14px;
   font-weight: bold;
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.previewImages{
+  display:  flex;
+  .imageContainer{
+    position: relative;
+    .imagePreview{
+      width: 120px;
+      margin: 5px;
+    }
+    .deleteImageButton{
+      cursor: pointer;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      z-index: 1;
+      color: #ff5728;
+      transition: 0.5s;
+      background-color: #000;
+      &:hover {
+        background-color: #fff;
+        transition: 0.5s;
+      }
+    }
+  }
+}
+
+.buttonsContainer{
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.eventsContainer{
+  display: flex;
+}

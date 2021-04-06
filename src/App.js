@@ -16,6 +16,7 @@ class App extends Component {
                     <Route path="/account" exact component={SignAccount}/>
                     <Route path="/sign-up" exact component={SignUp}/>
                     <Route path="/add-event" exact component={AddEvent}/>
+                    <Route path="/edit-event/:eventId" component={AddEvent}/>
                     <Route component={Error404}/>
                 </Switch>
             </BrowserRouter>
