@@ -76,10 +76,11 @@ class AddEvent extends Component {
         const FileList = [];
         const errors = {};
         const user = Account.getAccount();
+        const event = Account.getEvents();
         fileAttr.map((f, i) => FileList[i] = f.file);
 
         values.userId = user._id;
-        values.eventId = eventId.eventId;
+        values.eventId = event._id;
         delete values.previewDeleteImages;
         values.deleteImages = deleteImages;
 
