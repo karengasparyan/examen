@@ -19,19 +19,23 @@ class AllEvents extends Component {
                     <div className="eventsContainer">
                         <div>
                             {ev.image.map(i => <img
-                                width={200}
+                                width={180}
                                 src={`http://localhost:4000/eventImage/folder_${ev._id}/${i}`}
                                 alt="image"/>)}
                         </div>
-
                         <div>
+                            <span>Title</span>
                             <p>{ev.title}</p>
+                            <span>Description</span>
                             <p>{ev.description}</p>
+                            <span>Limit</span>
                             <p>{ev.limit}</p>
+                            <span>Status</span>
                             <p>{ev.status}</p>
-                            <p>{ev.description}</p>
                         </div>
                     </div>
+                    <button className="buttons">follow</button>
+                    <hr/>
                 </>)}
             </div>
         );

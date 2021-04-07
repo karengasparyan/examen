@@ -34,7 +34,7 @@ class SignIn extends Component {
                 break;
         }
         this.setState({errors, [name]: value});
-    }
+    };
 
     handleChange = (ev, i) => {
         this.setState({values: {...this.state.values, [i]: ev.target.value}})
@@ -62,11 +62,10 @@ class SignIn extends Component {
             return <Redirect to="/account"/>
         }
         return (
-            <>
-                <h1>Sign In</h1>
-                <Link to="/sign-up" ><h1>Sign Up</h1></Link>
-                <form onSubmit={this.handleSubmit}>
-                    <label htmlFor="email">Email</label>
+            <div className="formContainer">
+                <form className="signForm" onSubmit={this.handleSubmit}>
+                    <h1 className="titles">Sign In</h1>
+                    <label className="labels" htmlFor="email">Email</label>
                     <input
                         onChange={(ev) => this.handleChange(ev, 'email')}
                         onBlur={this.inputValidate}
@@ -74,9 +73,10 @@ class SignIn extends Component {
                         value={values.email}
                         id="email"
                         name="email"
+                        className="inputs"
                     />
                     <p className="errors">{errors.email}</p>
-                    <label htmlFor="password">Password</label>
+                    <label className="labels" htmlFor="password">Password</label>
                     <input
                         onChange={(ev) => this.handleChange(ev, 'password')}
                         onBlur={this.inputValidate}
@@ -84,13 +84,18 @@ class SignIn extends Component {
                         value={values.password}
                         id="password"
                         name="password"
+                        className="inputs"
                     />
                     <p className="errors">{errors.password}</p>
-                    <button type='submit'>sign in</button>
-                    <p className="errors">{error.email}</p>
-                    <p className="errors">{error.password}</p>
+                    <button className="buttons" type='submit'>Sign in</button>
+                    {error.email && <span className="errors">{error.email}</span>}
+                    {error.password && <span className="errors">{error.password}</span>}
+                    <div className="signUpInfoContainer">
+                        <span className="signUpInfo">if there is no account?</span>
+                        <Link className="signUpInfoLink" to="/sign-up" >sign up</Link>
+                    </div>
                 </form>
-            </>
+            </div>
         );
     }
 }

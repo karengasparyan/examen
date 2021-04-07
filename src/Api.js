@@ -37,7 +37,6 @@ class Api {
   }
 
   static updateEvent(file, requestData) {
-    console.log(4444444444444444,requestData)
     return api.post('/events/update',serialize({file, ...requestData}));
   }
 
@@ -55,6 +54,15 @@ class Api {
 
   static singleEvent(eventId) {
     return api.post('/events/single-event',{eventId});
+  }
+
+  static pendingEvent(userId, eventId) {
+    console.log(eventId)
+    return api.post('/events/pending-event',{userId, eventId});
+  }
+
+  static getPendingEvent(eventId) {
+    return api.post('/events/get-pending-event',{eventId});
   }
 
   // static uploadImage(file, userId) {

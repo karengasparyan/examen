@@ -63,3 +63,25 @@ export function singleEventRequest(eventId, cb) {
     payload: { eventId, cb },
   };
 }
+
+export const PENDING_EVENT_REQUEST = 'PENDING_EVENT_REQUEST';
+export const PENDING_EVENT_SUCCESS = 'PENDING_EVENT_SUCCESS';
+export const PENDING_EVENT_FAIL = 'PENDING_EVENT_FAIL';
+
+export function pendingEventRequest(userId, eventId) {
+  return {
+    type: PENDING_EVENT_REQUEST,
+    payload: { userId, eventId },
+  };
+}
+
+export const GET_PENDING_EVENT_REQUEST = 'GET_PENDING_EVENT_REQUEST';
+export const GET_PENDING_EVENT_SUCCESS = 'GET_PENDING_EVENT_SUCCESS';
+export const GET_PENDING_EVENT_FAIL = 'GET_PENDING_EVENT_FAIL';
+
+export function getPendingEventRequest(userId, eventId) {
+  return {
+    type: GET_PENDING_EVENT_REQUEST,
+    payload: { userId, eventId },
+  };
+}

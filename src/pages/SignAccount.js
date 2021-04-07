@@ -21,42 +21,42 @@ class SignIn extends Component {
         window.location.href = '/';
     };
 
-    handleClickAddEvent = () => {
-        this.props.history.push('/add-event')
-    };
-
     handleChangeTabs = (changedTab) => {
         this.setState({changedTab})
     };
 
 
     render() {
-        const { user } = this.props;
+        const {user} = this.props;
         const {changedTab} = this.state;
         const image = _.get(user, ['picture', '0'], null);
 
         return (
             <WrapperSign>
-                <img width={200} src={`http://localhost:4000/userImage/folder_${user._id}/${image}`} alt="image"/>
-                <p>{user.first_name}</p>
-                <p>{user.last_name}</p>
-                <p>{user.email}</p>
-                {/*<div>{user?.picture?.map(i => <img*/}
-                {/*    key={_.uniqueId(user._id)}*/}
-                {/*    src={`http://localhost:4000/userImage/folder_${user._id}/${i}`}*/}
-                {/*    alt="image" />)}</div>*/}
-                <p>{user.phone}</p>
-                <p>{user.age}</p>
-                <div className="buttonsContainer">
-                    <button onClick={this.handleClickAddEvent}>Add event</button>
-                    <button onClick={this.exitAccount}>EXIT</button>
-                </div>
-                <div className="eventsTabsContainer">
-                    <h1>Events</h1>
-                    <button onClick={() => this.handleChangeTabs('MyEvents')}>My events</button>
-                    <button onClick={() => this.handleChangeTabs('AllEvents')}>All events</button>
-                    {changedTab === 'MyEvents' && <MyEvents userId={user._id} />}
-                    {changedTab === 'AllEvents' && <AllEvents />}
+                <div className="profileContainer">
+                    <div className="profileData">
+                        <img width={200} src={`http://localhost:4000/userImage/folder_${user._id}/${image}`} alt="image"/>
+                        <p className="profileText">{user._id}</p>
+                        <p className="profileText">{user.first_name}</p>
+                        <p className="profileText">{user.last_name}</p>
+                        <p className="profileText">{user.email}</p>
+                        <p className="profileText">{user.phone}</p>
+                        <p className="profileText">{user.age}</p>
+                        <button className="buttons" onClick={this.exitAccount}>EXIT</button>
+                    </div>
+                    <div className="eventsTabsContainer">
+                        <h1>Events</h1>
+
+                        <button className="buttons" onClick={() => this.handleChangeTabs('MyEvents')}>My events</button>
+                        <button className="buttons" onClick={() => this.handleChangeTabs('AllEvents')}>All events</button>
+                        <button className="buttons" onClick={() => this.handleChangeTabs('FollowEvents')}>Follow events</button>
+                        <button className="buttons" onClick={() => this.handleChangeTabs('FollowRequest')}>Follow request</button>
+
+                        {changedTab === 'MyEvents' && <MyEvents userId={user._id}/>}
+                        {changedTab === 'AllEvents' && <MyEvents eventTab="AllEvents" userId={user._id}/>}
+                        {changedTab === 'FollowEvents' && <MyEvents eventTab="FollowEvents" userId={user._id}/>}
+                        {changedTab === 'FollowRequest' && <MyEvents eventTab="FollowRequest" userId={user._id}/>}
+                    </div>
                 </div>
             </WrapperSign>
         );

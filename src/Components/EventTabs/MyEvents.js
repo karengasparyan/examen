@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import _ from 'lodash';
-import {allMyEventRequest, deleteEventRequest, singleEventRequest} from "../../store/actions/events";
+import {
+    allEventRequest,
+    allMyEventRequest,
+    deleteEventRequest, getPendingEventRequest,
+    pendingEventRequest,
+    singleEventRequest
+} from "../../store/actions/events";
 import {withRouter} from "react-router-dom";
 import memoizeOne from "memoize-one";
 
@@ -12,8 +18,11 @@ class MyEvents extends Component {
     }
 
     componentDidMount() {
-        const {userId} = this.props;
+        const {userId, eventTab} = this.props;
         this.props.allMyEventRequest(userId, null, 1);
+        if (eventTab === 'AllEvents') {
+            this.props.allEventRequest(null, 1);
+        }
     }
 
     deleteEvent = (userId, eventId) => {
@@ -26,6 +35,10 @@ class MyEvents extends Component {
         });
     };
 
+    handleClickAddEvent = () => {
+        this.props.history.push('/add-event')
+    };
+
     editEvent = (ev) => {
         this.props.singleEventRequest(ev, async (error, data) => {
             if (error) {
@@ -35,48 +48,104 @@ class MyEvents extends Component {
         });
     };
 
+    addEvent = (userId, eventId) => {
+        this.props.pendingEventRequest(userId, eventId)
+    };
+
     render() {
-        const {myEvents, myEventPagesCount, userId} = this.props;
+        const {
+            eventTab,
+            myEvents,
+            allEvents,
+            myEventPagesCount,
+            allEventPagesCount,
+            pendingEvents,
+            userId,
+        } = this.props;
+
+        let renderData = [];
+        let MyEvents = false;
+        let AllEvents = false;
+        let FollowEvents = false;
+        let FollowRequest = false;
+
+        switch (eventTab) {
+            case 'AllEvents':
+                renderData = allEvents;
+                AllEvents = true;
+                break;
+            case 'FollowEvents':
+                renderData = [];
+                FollowEvents = true;
+                break;
+            case 'FollowRequest':
+                renderData = pendingEvents;
+                console.log(pendingEvents)
+                FollowRequest = true;
+                break;
+            default:
+                renderData = myEvents;
+                MyEvents = true;
+                break;
+        }
 
         return (
             <div>
-                <h1>My Events</h1>
-                {myEvents.map(ev => <>
-                    <div className="eventsContainer">
+                {MyEvents && <h1>My Events</h1>}
+                {AllEvents && <h1>All Events</h1>}
+                {FollowEvents && <h1>Follow Events</h1>}
+                {FollowRequest && <h1>Follow Request</h1>}
+                {MyEvents && <button className="buttons" onClick={this.handleClickAddEvent}>Add event</button>}
+                {renderData.map(ev => <>
+                    <div key={ev._id} className="eventsContainer">
                         <div>
                             {ev.image.map(i => <img
-                                width={200}
+                                key={i}
+                                width={180}
                                 src={`http://localhost:4000/eventImage/folder_${ev._id}/${i}`}
                                 alt="image"/>)}
                         </div>
                         <div>
+                            <span>Title</span>
                             <p>{ev.title}</p>
+                            <span>Description</span>
                             <p>{ev.description}</p>
+                            <span>Limit</span>
                             <p>{ev.limit}</p>
+                            <span>Status</span>
                             <p>{ev.status}</p>
-                            <p>{ev.description}</p>
+                            {AllEvents && <button
+                                onClick={() => this.addEvent(userId, ev._id)}
+                                className="buttons"
+                            >Add to my events</button>}
                         </div>
-                        <div>
-                            <button onClick={() => this.deleteEvent(userId, ev._id)}>delete</button>
-                            <button onClick={() => this.editEvent(ev._id)}>edit</button>
-                        </div>
+                        {MyEvents && <div>
+                            <button className="buttons" onClick={() => this.deleteEvent(userId, ev._id)}>delete</button>
+                            <button className="buttons" onClick={() => this.editEvent(ev._id)}>edit</button>
+                        </div>}
                     </div>
+                    <hr/>
                 </>)}
             </div>
         );
     }
 }
 
-
 const mapStateToProps = (state) => ({
     singleEvent: state.events.singleEvent,
     myEvents: state.events.myEvents,
     myEventPagesCount: state.events.myEventPagesCount,
+    allEvents: state.events.allEvents,
+    allEventPagesCount: state.events.allEventPagesCount,
+    pendingEvents: state.events.pendingEvents,
 });
 const mapDispatchToProps = {
     deleteEventRequest,
     allMyEventRequest,
     singleEventRequest,
+    allEventRequest,
+    pendingEventRequest,
+    getPendingEventRequest,
 };
 
 const Container = connect(

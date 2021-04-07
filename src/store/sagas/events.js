@@ -12,9 +12,17 @@ import {
   ALL_MY_EVENT_SUCCESS,
   DELETE_EVENT_FAIL,
   DELETE_EVENT_REQUEST,
-  DELETE_EVENT_SUCCESS, SINGLE_EVENT_FAIL,
+  DELETE_EVENT_SUCCESS, GET_PENDING_EVENT_FAIL,
+  GET_PENDING_EVENT_REQUEST, GET_PENDING_EVENT_SUCCESS,
+  PENDING_EVENT_FAIL,
+  PENDING_EVENT_REQUEST,
+  PENDING_EVENT_SUCCESS,
+  SINGLE_EVENT_FAIL,
   SINGLE_EVENT_REQUEST,
-  SINGLE_EVENT_SUCCESS, UPDATE_EVENT_FAIL, UPDATE_EVENT_REQUEST, UPDATE_EVENT_SUCCESS
+  SINGLE_EVENT_SUCCESS,
+  UPDATE_EVENT_FAIL,
+  UPDATE_EVENT_REQUEST,
+  UPDATE_EVENT_SUCCESS
 } from "../actions/events";
 
 function* addEvent(action) {
@@ -143,6 +151,48 @@ function* singleEvent(action) {
   }
 }
 
+function* pendingEvent(action) {
+  try {
+    const { userId, eventId } = action.payload;
+    const { data } = yield call(Api.pendingEvent, userId, eventId);
+    yield put({
+      type: PENDING_EVENT_SUCCESS,
+      payload: { data },
+    });
+    // if (action.payload.cb) {
+    //   action.payload.cb(null, data)
+    // }
+  } catch (e) {
+    yield put({
+      type: PENDING_EVENT_FAIL,
+      message: e.message,
+      payload: { data: e.response?.data || {} },
+    });
+    // if (action.payload.cb) {
+    //   action.payload.cb(e, null)
+    // }
+  }
+}
+
+function* getPendingEvent(action) {
+  try {
+    const { eventId } = action.payload;
+    const { data } = yield call(Api.getPendingEvent, eventId);
+    yield put({
+      type: GET_PENDING_EVENT_SUCCESS,
+      payload: { data },
+    });
+
+  } catch (e) {
+    yield put({
+      type: GET_PENDING_EVENT_FAIL,
+      message: e.message,
+      payload: { data: e.response?.data || {} },
+    });
+
+  }
+}
+
 export default function* watcher() {
   yield takeLatest(ADD_EVENT_REQUEST, addEvent);
   yield takeLatest(UPDATE_EVENT_REQUEST, updateEvent);
@@ -150,4 +200,6 @@ export default function* watcher() {
   yield takeLatest(ALL_MY_EVENT_REQUEST, allMyEvent);
   yield takeLatest(ALL_EVENT_REQUEST, allEvent);
   yield takeLatest(SINGLE_EVENT_REQUEST, singleEvent);
+  yield takeLatest(PENDING_EVENT_REQUEST, pendingEvent);
+  yield takeLatest(GET_PENDING_EVENT_REQUEST, getPendingEvent);
 }

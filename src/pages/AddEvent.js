@@ -177,99 +177,105 @@ class AddEvent extends Component {
 
         return (
             <WrapperSign>
-                <h1>Add Event</h1>
-                <form className="form" onSubmit={edit ? this.handleSubmitEdit : this.handleSubmitAdd}>
-                    <label htmlFor="title">Title</label>
-                    <input
-                        onChange={(ev) => this.handleChange(ev, 'title')}
-                        onBlur={this.inputValidate}
-                        type="text"
-                        value={values.title}
-                        id="title"
-                        name="title"
-                    />
-                    <p className="errors">{errors.title}</p>
-                    <label htmlFor="description">Description</label>
-                    <input
-                        onChange={(ev) => this.handleChange(ev, 'description')}
-                        onBlur={this.inputValidate}
-                        type="text"
-                        value={values.description}
-                        id="description"
-                        name="description"
-                    />
-                    <p className="errors">{errors.description}</p>
-                    <label htmlFor="limit">Limit</label>
-                    <input
-                        onChange={(ev) => this.handleChange(ev, 'limit')}
-                        onBlur={this.inputValidate}
-                        type="limit"
-                        value={values.limit}
-                        id="limit"
-                        name="limit"
-                    />
-                    <p className="errors">{errors.limit}</p>
-                    <label htmlFor="status">Status</label>
-                    <input
-                        onChange={(ev) => this.handleChange(ev, 'status')}
-                        onBlur={this.inputValidate}
-                        type="text"
-                        value={values.status}
-                        id="status"
-                        name="status"
-                    />
-                    <p className="errors">{errors.status}</p>
-                    <label htmlFor="image">Upload image</label>
-                    <input
-                        type="file"
-                        name="file"
-                        multiple
-                        id="image"
-                        onChange={(ev) => {
-                            this.handleChangeImages(ev);
-                            this.inputValidate(ev);
-                        }}
-                    />
-                    <div className="previewImages">
-                        {fileAttr?.map((f, i) => <div className="imageContainer">
-                            <img
-                                key={i}
-                                className="imagePreview"
-                                src={f.path}
-                                alt={`image${i}`}
-                            />
-                            <span
-                                onClick={() => this.removePreviewImage(f)}
-                                className="deleteImageButton"
-                                title="delete"
-                            >x</span>
-                        </div>)}
-                    </div>
+                <div className="formContainer">
+                    <form className="signForm" onSubmit={edit ? this.handleSubmitEdit : this.handleSubmitAdd}>
+                        <h1 className="titles">Add event</h1>
+                        <label className="labels" htmlFor="title">Title</label>
+                        <input
+                            onChange={(ev) => this.handleChange(ev, 'title')}
+                            onBlur={this.inputValidate}
+                            type="text"
+                            value={values.title}
+                            id="title"
+                            name="title"
+                            className="inputs"
+                        />
+                        <p className="errors">{errors.title}</p>
+                        <label className="labels" htmlFor="description">Description</label>
+                        <input
+                            onChange={(ev) => this.handleChange(ev, 'description')}
+                            onBlur={this.inputValidate}
+                            type="text"
+                            value={values.description}
+                            id="description"
+                            name="description"
+                            className="inputs"
+                        />
+                        <p className="errors">{errors.description}</p>
+                        <label className="labels" htmlFor="limit">Limit</label>
+                        <input
+                            onChange={(ev) => this.handleChange(ev, 'limit')}
+                            onBlur={this.inputValidate}
+                            type="limit"
+                            value={values.limit}
+                            id="limit"
+                            name="limit"
+                            className="inputs"
+                        />
+                        <p className="errors">{errors.limit}</p>
+                        <label className="labels" htmlFor="status">Status</label>
+                        <input
+                            onChange={(ev) => this.handleChange(ev, 'status')}
+                            onBlur={this.inputValidate}
+                            type="text"
+                            value={values.status}
+                            id="status"
+                            name="status"
+                            className="inputs"
+                        />
+                        <p className="errors">{errors.status}</p>
+                        <label className="labels" htmlFor="image">Upload image</label>
+                        <input
+                            type="file"
+                            name="file"
+                            multiple
+                            id="image"
+                            onChange={(ev) => {
+                                this.handleChangeImages(ev);
+                                this.inputValidate(ev);
+                            }}
+                        />
+                        <div className="previewImages">
+                            {fileAttr?.map((f, i) => <div className="imageContainer">
+                                <img
+                                    key={i}
+                                    className="imagePreview"
+                                    src={f.path}
+                                    alt={`image${i}`}
+                                />
+                                <span
+                                    onClick={() => this.removePreviewImage(f)}
+                                    className="deleteImageButton"
+                                    title="delete"
+                                >x</span>
+                            </div>)}
+                        </div>
 
-                    {edit && <div className="previewImages">
-                        {singleEvent.image?.map((i) => <div className="imageContainer">
-                            <img
-                                key={i}
-                                className="imagePreview"
-                                src={`http://localhost:4000/eventImage/folder_${singleEvent._id}/${i}`}
-                                alt={`image${i}`}
-                            />
-                            <span
-                                onClick={() => this.removeImage(i)}
-                                className="deleteImageButton"
-                                title="delete"
-                            >x</span>
-                        </div>)}
-                    </div>}
-                    <div>
-                        <p className="errors">{errors.file}</p>
-                        {edit ? <button type='submit'>Save Change</button> : <button type='submit'>Add</button>}
-                    </div>
-                    <p className="errors">{error.title}</p>
-                    <p className="errors">{error.description}</p>
-                    <p className="errors">{error.limit}</p>
-                    <p className="errors">{error.status}</p>
-                </form>
+                        {edit && <div className="previewImages">
+                            {singleEvent.image?.map((i) => <div className="imageContainer">
+                                <img
+                                    key={i}
+                                    className="imagePreview"
+                                    src={`http://localhost:4000/eventImage/folder_${singleEvent._id}/${i}`}
+                                    alt={`image${i}`}
+                                />
+                                <span
+                                    onClick={() => this.removeImage(i)}
+                                    className="deleteImageButton"
+                                    title="delete"
+                                >x</span>
+                            </div>)}
+                        </div>}
+                        <div>
+                            <p className="errors">{errors.file}</p>
+                            {edit ? <button type='submit'>Save Change</button> : <button type='submit'>Add</button>}
+                        </div>
+                        <span className="errors">{error.title}</span>
+                        <span className="errors">{error.description}</span>
+                        <span className="errors">{error.limit}</span>
+                        <span className="errors">{error.status}</span>
+                    </form>
+                </div>
             </WrapperSign>
         );
     }

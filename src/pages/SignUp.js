@@ -39,7 +39,7 @@ class SignUp extends Component {
       })
     }
     this.setState({fileAttr})
-  }
+  };
 
   handleSubmit = (ev) => {
     ev.preventDefault();
@@ -50,14 +50,14 @@ class SignUp extends Component {
     this.props.signUpRequest(FileList, {...values}, async (error, data) => {
       if (error) {
         if (_.isEmpty(values)) {
-          errors.last_name = 'this is a required field'
-          errors.first_name = 'this is a required field'
-          errors.email = 'this is a required field'
-          errors.phone = 'this is a required field'
-          errors.age = 'this is a required field'
-          errors.password = 'this is a required field'
-          errors.repeatPassword = 'this is a required field'
-          errors.file = 'this is a required field'
+          errors.last_name = 'this is a required field';
+          errors.first_name = 'this is a required field';
+          errors.email = 'this is a required field';
+          errors.phone = 'this is a required field';
+          errors.age = 'this is a required field';
+          errors.password = 'this is a required field';
+          errors.repeatPassword = 'this is a required field';
+          errors.file = 'this is a required field';
           this.setState({errors})
         }
         return;
@@ -109,10 +109,10 @@ class SignUp extends Component {
     const {error} = this.props;
 
     return (
-      <>
-        <h1>Sign Up</h1>
-        <form style={{display: 'flex', flexDirection: "column", width: '50%'}} onSubmit={this.handleSubmit}>
-          <label htmlFor="first_name">first name</label>
+      <div style={{marginTop: 0}} className="formContainer">
+        <form className="signForm" onSubmit={this.handleSubmit}>
+          <h1 className="titles">Sign Up</h1>
+          <label className="labels" htmlFor="first_name">first name</label>
           <input
             onChange={(ev) => {
               this.handleChange(ev, 'first_name')
@@ -123,9 +123,10 @@ class SignUp extends Component {
             value={values.first_name}
             id="first_name"
             name="first_name"
+            className="inputs"
           />
           <p className="errors">{errors.first_name}</p>
-          <label htmlFor="last_name">last name</label>
+          <label className="labels" htmlFor="last_name">last name</label>
           <input
             onChange={(ev) => {
               this.handleChange(ev, 'last_name')
@@ -136,9 +137,10 @@ class SignUp extends Component {
             value={values.last_name}
             id="last_name"
             name="last_name"
+            className="inputs"
           />
           <p className="errors">{errors.last_name}</p>
-          <label htmlFor="email">email</label>
+          <label className="labels" htmlFor="email">email</label>
           <input
             onChange={(ev) => {
               this.handleChange(ev, 'email')
@@ -149,9 +151,10 @@ class SignUp extends Component {
             value={values.email}
             id="email"
             name="email"
+            className="inputs"
           />
           <p className="errors">{errors.email}</p>
-          <label htmlFor="phone">phone</label>
+          <label className="labels" htmlFor="phone">phone</label>
           <input
             onChange={(ev) => {
               this.handleChange(ev, 'phone')
@@ -162,9 +165,10 @@ class SignUp extends Component {
             value={values.phone}
             id="phone"
             name="phone"
+            className="inputs"
           />
           <p className="errors">{errors.phone}</p>
-          <label htmlFor="age">age</label>
+          <label className="labels" htmlFor="age">age</label>
           <input
             onChange={(ev) => this.handleChange(ev, 'age')}
             onBlur={this.inputValidate}
@@ -172,9 +176,10 @@ class SignUp extends Component {
             value={values.age}
             id="age"
             name="age"
+            className="inputs"
           />
           <p className="errors">{errors.age}</p>
-          <label htmlFor="password">password</label>
+          <label className="labels" htmlFor="password">password</label>
           <input
             onChange={(ev) => this.handleChange(ev, 'password')}
             onBlur={this.inputValidate}
@@ -182,9 +187,10 @@ class SignUp extends Component {
             value={values.password}
             id="password"
             name="password"
+            className="inputs"
           />
           <p className="errors">{errors.password}</p>
-          <label htmlFor="repeatPassword">repeat password</label>
+          <label className="labels" htmlFor="repeatPassword">repeat password</label>
           <input
             onChange={(ev) => this.handleChange(ev, 'repeatPassword')}
             onBlur={this.inputValidate}
@@ -192,6 +198,7 @@ class SignUp extends Component {
             value={values.repeatPassword}
             id="repeatPassword"
             name="repeatPassword"
+            className="inputs"
           />
           <p className="errors">{errors.repeatPassword}</p>
           <label htmlFor="picture">upload picture</label>
@@ -200,20 +207,22 @@ class SignUp extends Component {
             name="file"
             multiple
             id="picture"
-            onChange={this.handleChangeImages}
-            onBlur={this.inputValidate}
+            onChange={(ev) => {
+              this.handleChangeImages(ev);
+              this.inputValidate(ev)
+            }}
           />
           <p className="errors">{errors.file}</p>
-          <button type='submit'>sign in</button>
-          <p className="errors">{error.last_name}</p>
-          <p className="errors">{error.first_name}</p>
-          <p className="errors">{error.email}</p>
-          <p className="errors">{error.phone}</p>
-          <p className="errors">{error.age}</p>
-          <p className="errors">{error.password}</p>
-          <p className="errors">{error.repeatPassword}</p>
+          <button className="buttons" type='submit'>Sign up</button>
+          <span className="errors">{error.last_name}</span>
+          <span className="errors">{error.first_name}</span>
+          <span className="errors">{error.email}</span>
+          <span className="errors">{error.phone}</span>
+          <span className="errors">{error.age}</span>
+          <span className="errors">{error.password}</span>
+          <span className="errors">{error.repeatPassword}</span>
         </form>
-      </>
+      </div>
     );
   }
 }
