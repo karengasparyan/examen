@@ -113,8 +113,8 @@ function* allMyEvent(action) {
 
 function* allEvent(action) {
   try {
-    const { query, page } = action.payload;
-    const { data } = yield call(Api.allEvent, query, page);
+    const {userId, query, page } = action.payload;
+    const { data } = yield call(Api.allEvent,userId, query, page);
     yield put({
       type: ALL_EVENT_SUCCESS,
       payload: { data },
@@ -176,8 +176,8 @@ function* pendingEvent(action) {
 
 function* getPendingEvent(action) {
   try {
-    const { eventId } = action.payload;
-    const { data } = yield call(Api.getPendingEvent, eventId);
+    const { userId } = action.payload;
+    const { data } = yield call(Api.getPendingEvent, userId);
     yield put({
       type: GET_PENDING_EVENT_SUCCESS,
       payload: { data },

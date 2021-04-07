@@ -48,8 +48,8 @@ class Api {
     return api.post('/events/all-my',{userId, query, page});
   }
 
-  static allEvent(query, page) {
-    return api.post('/events/all',{query, page});
+  static allEvent(userId, query, page) {
+    return api.post('/events/all',{userId, query, page});
   }
 
   static singleEvent(eventId) {
@@ -57,12 +57,11 @@ class Api {
   }
 
   static pendingEvent(userId, eventId) {
-    console.log(eventId)
     return api.post('/events/pending-event',{userId, eventId});
   }
 
-  static getPendingEvent(eventId) {
-    return api.post('/events/get-pending-event',{eventId});
+  static getPendingEvent(userId) {
+    return api.post('/events/get-pending-events',{userId});
   }
 
   // static uploadImage(file, userId) {

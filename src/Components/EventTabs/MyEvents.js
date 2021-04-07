@@ -4,7 +4,8 @@ import _ from 'lodash';
 import {
     allEventRequest,
     allMyEventRequest,
-    deleteEventRequest, getPendingEventRequest,
+    deleteEventRequest,
+    getPendingEventRequest,
     pendingEventRequest,
     singleEventRequest
 } from "../../store/actions/events";
@@ -15,14 +16,25 @@ class MyEvents extends Component {
     constructor(props) {
         super(props);
         this.state = {}
+        this.intervalRequest = null;
     }
 
     componentDidMount() {
         const {userId, eventTab} = this.props;
         this.props.allMyEventRequest(userId, null, 1);
         if (eventTab === 'AllEvents') {
-            this.props.allEventRequest(null, 1);
+            this.props.allEventRequest(userId, null, 1);
         }
+        if (eventTab === 'FollowRequest') {
+            this.props.getPendingEventRequest(userId)
+            this.intervalRequest = setInterval(() => {
+                this.props.getPendingEventRequest(userId)
+            },60000)
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalRequest);
     }
 
     deleteEvent = (userId, eventId) => {
@@ -71,7 +83,7 @@ class MyEvents extends Component {
 
         switch (eventTab) {
             case 'AllEvents':
-                renderData = allEvents;
+                renderData = allEvents.filter(all => all.userId !== userId);
                 AllEvents = true;
                 break;
             case 'FollowEvents':
@@ -80,7 +92,6 @@ class MyEvents extends Component {
                 break;
             case 'FollowRequest':
                 renderData = pendingEvents;
-                console.log(pendingEvents)
                 FollowRequest = true;
                 break;
             default:
@@ -88,7 +99,7 @@ class MyEvents extends Component {
                 MyEvents = true;
                 break;
         }
-
+        console.log(renderData)
         return (
             <div>
                 {MyEvents && <h1>My Events</h1>}
@@ -106,6 +117,8 @@ class MyEvents extends Component {
                                 alt="image"/>)}
                         </div>
                         <div>
+                            <span>Email</span>
+                            <p>{ev.userId.email}</p>
                             <span>Title</span>
                             <p>{ev.title}</p>
                             <span>Description</span>
@@ -114,6 +127,8 @@ class MyEvents extends Component {
                             <p>{ev.limit}</p>
                             <span>Status</span>
                             <p>{ev.status}</p>
+                            <span>EventId</span>
+                            <p>{ev._id}</p>
                             {AllEvents && <button
                                 onClick={() => this.addEvent(userId, ev._id)}
                                 className="buttons"
@@ -122,6 +137,15 @@ class MyEvents extends Component {
                         {MyEvents && <div>
                             <button className="buttons" onClick={() => this.deleteEvent(userId, ev._id)}>delete</button>
                             <button className="buttons" onClick={() => this.editEvent(ev._id)}>edit</button>
+                        </div>}
+                        {FollowRequest && <div style={{border: 'solid 2px red'}}>
+                            <h3>This event wants to subscribe users</h3>
+                            {ev.members.map(u => <div>
+                                <p>{u.userId}</p>
+                                <p>{u.status}</p>
+                                <button className="buttons" onClick={() => this.addFollow(userId, ev._id)}>follow</button>
+                                <button className="buttons" onClick={() => this.deleteFollowRequest(ev._id)}>delete</button>
+                            </div>)}
                         </div>}
                     </div>
                     <hr/>

@@ -35,10 +35,10 @@ export const ALL_EVENT_REQUEST = 'ALL_EVENT_REQUEST';
 export const ALL_EVENT_SUCCESS = 'ALL_EVENT_SUCCESS';
 export const ALL_EVENT_FAIL = 'ALL_EVENT_FAIL';
 
-export function allEventRequest( query, page) {
+export function allEventRequest(userId, query, page) {
   return {
     type: ALL_EVENT_REQUEST,
-    payload: { query, page },
+    payload: {userId, query, page },
   };
 }
 
@@ -79,9 +79,9 @@ export const GET_PENDING_EVENT_REQUEST = 'GET_PENDING_EVENT_REQUEST';
 export const GET_PENDING_EVENT_SUCCESS = 'GET_PENDING_EVENT_SUCCESS';
 export const GET_PENDING_EVENT_FAIL = 'GET_PENDING_EVENT_FAIL';
 
-export function getPendingEventRequest(userId, eventId) {
+export function getPendingEventRequest(userId) {
   return {
     type: GET_PENDING_EVENT_REQUEST,
-    payload: { userId, eventId },
+    payload: { userId },
   };
 }
