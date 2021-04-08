@@ -17,6 +17,7 @@ class AddEvent extends Component {
                 description: '',
                 limit: '',
                 status: '',
+                duration: '',
                 file: '',
             },
             fileAttr: [],
@@ -60,6 +61,7 @@ class AddEvent extends Component {
                     errors.description = this.props.error.description;
                     errors.limit = this.props.error.limit;
                     errors.status = this.props.error.status;
+                    errors.duration = this.props.error.duration;
                     errors.file = 'The title field is mandatory.';
                     this.setState({errors})
                 }
@@ -94,6 +96,7 @@ class AddEvent extends Component {
                     errors.description = this.props.error.description;
                     errors.limit = this.props.error.limit;
                     errors.status = this.props.error.status;
+                    errors.duration = this.props.error.duration;
                     errors.file = 'The title field is mandatory.';
                     this.setState({errors})
                 }
@@ -120,6 +123,9 @@ class AddEvent extends Component {
                 break;
             case 'status':
                 errors.status = value.length ? '' : 'Status is required';
+                break;
+            case 'duration':
+                errors.status = value.length ? '' : 'Duration is required';
                 break;
             case 'file':
                 errors.file = fileAttr && _.isEmpty(fileAttr) ? 'Image is required' : '';
@@ -160,6 +166,7 @@ class AddEvent extends Component {
             values.description = singleEvent.description;
             values.limit = singleEvent.limit;
             values.status = singleEvent.status;
+            values.duration = singleEvent.duration;
             values.previewDeleteImages = singleEvent.image;
             this.setState({values})
         }
@@ -206,7 +213,7 @@ class AddEvent extends Component {
                         <input
                             onChange={(ev) => this.handleChange(ev, 'limit')}
                             onBlur={this.inputValidate}
-                            type="limit"
+                            type="number"
                             value={values.limit}
                             id="limit"
                             name="limit"
@@ -224,6 +231,17 @@ class AddEvent extends Component {
                             className="inputs"
                         />
                         <p className="errors">{errors.status}</p>
+                        <label className="labels" htmlFor="duration">Duration</label>
+                        <input
+                            onChange={(ev) => this.handleChange(ev, 'duration')}
+                            onBlur={this.inputValidate}
+                            type="number"
+                            value={values.duration}
+                            id="duration"
+                            name="duration"
+                            className="inputs"
+                        />
+                        <p className="errors">{errors.duration}</p>
                         <label className="labels" htmlFor="image">Upload image</label>
                         <input
                             type="file"
@@ -250,7 +268,6 @@ class AddEvent extends Component {
                                 >x</span>
                             </div>)}
                         </div>
-
                         {edit && <div className="previewImages">
                             {singleEvent.image?.map((i) => <div className="imageContainer">
                                 <img
@@ -268,12 +285,14 @@ class AddEvent extends Component {
                         </div>}
                         <div>
                             <p className="errors">{errors.file}</p>
-                            {edit ? <button type='submit'>Save Change</button> : <button type='submit'>Add</button>}
+                            {edit ? <button className="buttons" type='submit'>Save Change</button> :
+                                <button className="buttons" type='submit'>Add</button>}
                         </div>
                         <span className="errors">{error.title}</span>
                         <span className="errors">{error.description}</span>
                         <span className="errors">{error.limit}</span>
                         <span className="errors">{error.status}</span>
+                        <span className="errors">{error.duration}</span>
                     </form>
                 </div>
             </WrapperSign>

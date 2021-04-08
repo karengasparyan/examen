@@ -10,14 +10,22 @@ import {
   ALL_MY_EVENT_SUCCESS,
   DELETE_EVENT_FAIL,
   DELETE_EVENT_REQUEST,
-  DELETE_EVENT_SUCCESS, GET_PENDING_EVENT_FAIL,
-  GET_PENDING_EVENT_REQUEST, GET_PENDING_EVENT_SUCCESS,
+  DELETE_EVENT_SUCCESS, DELETE_REQUEST_EVENT_FAIL, DELETE_REQUEST_EVENT_REQUEST, DELETE_REQUEST_EVENT_SUCCESS,
+  GET_PENDING_EVENT_FAIL,
+  GET_PENDING_EVENT_REQUEST,
+  GET_PENDING_EVENT_SUCCESS,
+  GET_SUCCESS_EVENT_FAIL,
+  GET_SUCCESS_EVENT_REQUEST,
+  GET_SUCCESS_EVENT_SUCCESS,
   PENDING_EVENT_FAIL,
   PENDING_EVENT_REQUEST,
   PENDING_EVENT_SUCCESS,
   SINGLE_EVENT_FAIL,
   SINGLE_EVENT_REQUEST,
   SINGLE_EVENT_SUCCESS,
+  SUCCESS_EVENT_FAIL,
+  SUCCESS_EVENT_REQUEST,
+  SUCCESS_EVENT_SUCCESS,
   UPDATE_EVENT_FAIL,
   UPDATE_EVENT_REQUEST,
   UPDATE_EVENT_SUCCESS
@@ -31,6 +39,7 @@ const initialState = {
   allEventPagesCount: 1,
   singleEvent: Account.getEvents(),
   pendingEvents: [],
+  successEvents: [],
   error: '',
 };
 
@@ -173,7 +182,42 @@ export default function reducer(state = initialState, action) {
         error: message,
       };
     }
-
+    case SUCCESS_EVENT_REQUEST: {
+      return {
+        ...state,
+        error: '',
+      };
+    }
+    case SUCCESS_EVENT_SUCCESS: {
+      return {
+        ...state,
+      };
+    }
+    case SUCCESS_EVENT_FAIL: {
+      const { message } = action.payload.data;
+      return {
+        ...state,
+        error: message,
+      };
+    }
+    case DELETE_REQUEST_EVENT_REQUEST: {
+      return {
+        ...state,
+        error: '',
+      };
+    }
+    case DELETE_REQUEST_EVENT_SUCCESS: {
+      return {
+        ...state,
+      };
+    }
+    case DELETE_REQUEST_EVENT_FAIL: {
+      const { message } = action.payload.data;
+      return {
+        ...state,
+        error: message,
+      };
+    }
     case GET_PENDING_EVENT_REQUEST: {
       return {
         ...state,
@@ -188,6 +232,27 @@ export default function reducer(state = initialState, action) {
       };
     }
     case GET_PENDING_EVENT_FAIL: {
+      const { message } = action.payload.data;
+      return {
+        ...state,
+        error: message,
+      };
+    }
+
+    case GET_SUCCESS_EVENT_REQUEST: {
+      return {
+        ...state,
+        error: '',
+      };
+    }
+    case GET_SUCCESS_EVENT_SUCCESS: {
+      const { successEvents } = action.payload.data;
+      return {
+        ...state,
+        successEvents,
+      };
+    }
+    case GET_SUCCESS_EVENT_FAIL: {
       const { message } = action.payload.data;
       return {
         ...state,

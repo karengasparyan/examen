@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import _ from 'lodash';
 import {
     allEventRequest,
     allMyEventRequest,
     deleteEventRequest,
+    deleteRequestEventRequest,
     getPendingEventRequest,
+    getSuccessEventRequest,
     pendingEventRequest,
-    singleEventRequest
+    singleEventRequest, successEventRequest
 } from "../../store/actions/events";
 import {withRouter} from "react-router-dom";
 import memoizeOne from "memoize-one";
@@ -15,7 +17,7 @@ import memoizeOne from "memoize-one";
 class MyEvents extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {};
         this.intervalRequest = null;
     }
 
@@ -26,10 +28,13 @@ class MyEvents extends Component {
             this.props.allEventRequest(userId, null, 1);
         }
         if (eventTab === 'FollowRequest') {
-            this.props.getPendingEventRequest(userId)
+            this.props.getPendingEventRequest(userId);
             this.intervalRequest = setInterval(() => {
                 this.props.getPendingEventRequest(userId)
             },60000)
+        }
+        if (eventTab === 'FollowEvents') {
+            this.props.getSuccessEventRequest(userId);
         }
     }
 
@@ -60,8 +65,42 @@ class MyEvents extends Component {
         });
     };
 
-    addEvent = (userId, eventId) => {
-        this.props.pendingEventRequest(userId, eventId)
+    sendAddEventRequest = (userId, eventId) => {
+        this.props.pendingEventRequest(userId, eventId, async (error, data) => {
+            if (error) {
+                return;
+            }
+            alert('request send')
+        });
+    };
+
+    successEventRequestFinish = (userId, eventId) => {
+        this.props.successEventRequest(userId, eventId, async (error, data) => {
+            if (error) {
+                return;
+            }
+            this.props.getPendingEventRequest(this.props.userId);
+        });
+    };
+
+    deleteMyEventRequest = (userId, eventId) => {
+        const deleteType = 'pending';
+        this.props.deleteRequestEventRequest(userId, eventId, deleteType, async (error, data) => {
+            if (error) {
+                return;
+            }
+            this.props.getPendingEventRequest(this.props.userId);
+        });
+    };
+
+    deleteMyFollow = (userId, eventId) => {
+        const deleteType = 'success';
+        this.props.deleteRequestEventRequest(userId, eventId, deleteType, async (error, data) => {
+            if (error) {
+                return;
+            }
+            this.props.getSuccessEventRequest(this.props.userId);
+        });
     };
 
     render() {
@@ -71,6 +110,7 @@ class MyEvents extends Component {
             allEvents,
             myEventPagesCount,
             allEventPagesCount,
+            successEvents,
             pendingEvents,
             userId,
         } = this.props;
@@ -81,17 +121,20 @@ class MyEvents extends Component {
         let FollowEvents = false;
         let FollowRequest = false;
 
+        let requestIndicator = '';
+
         switch (eventTab) {
             case 'AllEvents':
                 renderData = allEvents.filter(all => all.userId !== userId);
                 AllEvents = true;
                 break;
             case 'FollowEvents':
-                renderData = [];
+                renderData = successEvents;
                 FollowEvents = true;
                 break;
             case 'FollowRequest':
                 renderData = pendingEvents;
+                requestIndicator = pendingEvents.length ? `New request ${pendingEvents.length}` : '';
                 FollowRequest = true;
                 break;
             default:
@@ -99,13 +142,14 @@ class MyEvents extends Component {
                 MyEvents = true;
                 break;
         }
-        console.log(renderData)
+        console.log(renderData);
         return (
             <div>
                 {MyEvents && <h1>My Events</h1>}
                 {AllEvents && <h1>All Events</h1>}
                 {FollowEvents && <h1>Follow Events</h1>}
                 {FollowRequest && <h1>Follow Request</h1>}
+                {requestIndicator !== '' && <p className="errors">{requestIndicator}</p>}
                 {MyEvents && <button className="buttons" onClick={this.handleClickAddEvent}>Add event</button>}
                 {renderData.map(ev => <>
                     <div key={ev._id} className="eventsContainer">
@@ -129,10 +173,20 @@ class MyEvents extends Component {
                             <p>{ev.status}</p>
                             <span>EventId</span>
                             <p>{ev._id}</p>
-                            {AllEvents && <button
-                                onClick={() => this.addEvent(userId, ev._id)}
+                            {AllEvents && <Fragment>
+                             <button
+                                onClick={() => this.sendAddEventRequest(userId, ev._id)}
                                 className="buttons"
-                            >Add to my events</button>}
+                            >Add to my page</button>
+                                {/*{ev.members.some(m => m.userId === userId) ? <button*/}
+                                {/*    onClick={() => this.sendAddEventRequest(userId, ev._id)}*/}
+                                {/*    className="buttons"*/}
+                                {/*>Add to my page</button> : <button disabled>This event my followed</button>}*/}
+                            </Fragment>}
+                            {FollowEvents && <button
+                                onClick={() => this.deleteMyFollow(userId, ev._id)}
+                                className="buttons"
+                            >delete</button>}
                         </div>
                         {MyEvents && <div>
                             <button className="buttons" onClick={() => this.deleteEvent(userId, ev._id)}>delete</button>
@@ -140,11 +194,19 @@ class MyEvents extends Component {
                         </div>}
                         {FollowRequest && <div style={{border: 'solid 2px red'}}>
                             <h3>This event wants to subscribe users</h3>
-                            {ev.members.map(u => <div>
-                                <p>{u.userId}</p>
-                                <p>{u.status}</p>
-                                <button className="buttons" onClick={() => this.addFollow(userId, ev._id)}>follow</button>
-                                <button className="buttons" onClick={() => this.deleteFollowRequest(ev._id)}>delete</button>
+                            {ev.members.filter(f => f.status !== 'success').map(member => <div>
+                                <p>{member.email}</p>
+                                <p>{member.status}</p>
+                                <button
+                                    className="buttons"
+                                    onClick={() => this.successEventRequestFinish(member.userId, ev._id)}>
+                                    follow
+                                </button>
+                                <button
+                                    className="buttons"
+                                    onClick={() => this.deleteMyEventRequest(member.userId, ev._id)}>
+                                    delete
+                                </button>
                             </div>)}
                         </div>}
                     </div>
@@ -161,6 +223,7 @@ const mapStateToProps = (state) => ({
     myEventPagesCount: state.events.myEventPagesCount,
     allEvents: state.events.allEvents,
     allEventPagesCount: state.events.allEventPagesCount,
+    successEvents: state.events.successEvents,
     pendingEvents: state.events.pendingEvents,
 });
 const mapDispatchToProps = {
@@ -169,6 +232,9 @@ const mapDispatchToProps = {
     singleEventRequest,
     allEventRequest,
     pendingEventRequest,
+    successEventRequest,
+    deleteRequestEventRequest,
+    getSuccessEventRequest,
     getPendingEventRequest,
 };
 

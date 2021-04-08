@@ -68,10 +68,43 @@ export const PENDING_EVENT_REQUEST = 'PENDING_EVENT_REQUEST';
 export const PENDING_EVENT_SUCCESS = 'PENDING_EVENT_SUCCESS';
 export const PENDING_EVENT_FAIL = 'PENDING_EVENT_FAIL';
 
-export function pendingEventRequest(userId, eventId) {
+export function pendingEventRequest(userId, eventId, cb) {
   return {
     type: PENDING_EVENT_REQUEST,
-    payload: { userId, eventId },
+    payload: { userId, eventId, cb },
+  };
+}
+
+export const SUCCESS_EVENT_REQUEST = 'SUCCESS_EVENT_REQUEST';
+export const SUCCESS_EVENT_SUCCESS = 'SUCCESS_EVENT_SUCCESS';
+export const SUCCESS_EVENT_FAIL = 'SUCCESS_EVENT_FAIL';
+
+export function successEventRequest(userId, eventId, cb) {
+  return {
+    type: SUCCESS_EVENT_REQUEST,
+    payload: { userId, eventId, cb },
+  };
+}
+
+export const DELETE_REQUEST_EVENT_REQUEST = 'DELETE_REQUEST_EVENT_REQUEST';
+export const DELETE_REQUEST_EVENT_SUCCESS = 'DELETE_REQUEST_EVENT_SUCCESS';
+export const DELETE_REQUEST_EVENT_FAIL = 'DELETE_REQUEST_EVENT_FAIL';
+
+export function deleteRequestEventRequest(userId, eventId, deleteType, cb) {
+  return {
+    type: DELETE_REQUEST_EVENT_REQUEST,
+    payload: { userId, eventId, deleteType, cb },
+  };
+}
+
+export const GET_SUCCESS_EVENT_REQUEST = 'GET_SUCCESS_EVENT_REQUEST';
+export const GET_SUCCESS_EVENT_SUCCESS = 'GET_SUCCESS_EVENT_SUCCESS';
+export const GET_SUCCESS_EVENT_FAIL = 'GET_SUCCESS_EVENT_FAIL';
+
+export function getSuccessEventRequest(userId) {
+  return {
+    type: GET_SUCCESS_EVENT_REQUEST,
+    payload: { userId },
   };
 }
 

@@ -60,6 +60,18 @@ class Api {
     return api.post('/events/pending-event',{userId, eventId});
   }
 
+  static successEvent(userId, eventId) {
+    return api.post('/events/success-event',{userId, eventId});
+  }
+
+  static deleteRequestEvent(userId, eventId, deleteType) {
+    return api.post('/events/delete-request-event',{userId, eventId, deleteType});
+  }
+
+  static getSuccessEvent(userId) {
+    return api.post('/events/get-success-events',{userId});
+  }
+
   static getPendingEvent(userId) {
     return api.post('/events/get-pending-events',{userId});
   }

@@ -25,7 +25,6 @@ class SignIn extends Component {
         this.setState({changedTab})
     };
 
-
     render() {
         const {user} = this.props;
         const {changedTab} = this.state;
