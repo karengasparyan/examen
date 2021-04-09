@@ -16,7 +16,7 @@ class AddEvent extends Component {
                 title: '',
                 description: '',
                 limit: '',
-                status: '',
+                // status: '',
                 duration: '',
                 file: '',
             },
@@ -60,7 +60,7 @@ class AddEvent extends Component {
                     errors.title = this.props.error.title;
                     errors.description = this.props.error.description;
                     errors.limit = this.props.error.limit;
-                    errors.status = this.props.error.status;
+                    // errors.status = this.props.error.status;
                     errors.duration = this.props.error.duration;
                     errors.file = 'The title field is mandatory.';
                     this.setState({errors})
@@ -95,7 +95,7 @@ class AddEvent extends Component {
                     errors.title = this.props.error.title;
                     errors.description = this.props.error.description;
                     errors.limit = this.props.error.limit;
-                    errors.status = this.props.error.status;
+                    // errors.status = this.props.error.status;
                     errors.duration = this.props.error.duration;
                     errors.file = 'The title field is mandatory.';
                     this.setState({errors})
@@ -121,9 +121,9 @@ class AddEvent extends Component {
             case 'limit':
                 errors.limit = value.length ? '' : 'Limit is required';
                 break;
-            case 'status':
-                errors.status = value.length ? '' : 'Status is required';
-                break;
+            // case 'status':
+            //     errors.status = value.length ? '' : 'Status is required';
+            //     break;
             case 'duration':
                 errors.status = value.length ? '' : 'Duration is required';
                 break;
@@ -165,7 +165,7 @@ class AddEvent extends Component {
             values.title = singleEvent.title;
             values.description = singleEvent.description;
             values.limit = singleEvent.limit;
-            values.status = singleEvent.status;
+            // values.status = singleEvent.status;
             values.duration = singleEvent.duration;
             values.previewDeleteImages = singleEvent.image;
             this.setState({values})
@@ -182,6 +182,7 @@ class AddEvent extends Component {
             this.initEvent(singleEvent)
         }
 
+        console.log(values);
         return (
             <WrapperSign>
                 <div className="formContainer">
@@ -220,18 +221,27 @@ class AddEvent extends Component {
                             className="inputs"
                         />
                         <p className="errors">{errors.limit}</p>
-                        <label className="labels" htmlFor="status">Status</label>
-                        <input
-                            onChange={(ev) => this.handleChange(ev, 'status')}
-                            onBlur={this.inputValidate}
-                            type="text"
-                            value={values.status}
-                            id="status"
-                            name="status"
-                            className="inputs"
-                        />
-                        <p className="errors">{errors.status}</p>
+                        {/*<label className="labels" htmlFor="status">Status</label>*/}
+                        {/*<input*/}
+                        {/*    onChange={(ev) => this.handleChange(ev, 'status')}*/}
+                        {/*    onBlur={this.inputValidate}*/}
+                        {/*    type="text"*/}
+                        {/*    value={values.status}*/}
+                        {/*    id="status"*/}
+                        {/*    name="status"*/}
+                        {/*    className="inputs"*/}
+                        {/*/>*/}
+                        {/*<p className="errors">{errors.status}</p>*/}
                         <label className="labels" htmlFor="duration">Duration</label>
+                        {/*<input*/}
+                        {/*    onChange={(ev) => this.handleChange(ev, 'duration')}*/}
+                        {/*    onBlur={this.inputValidate}*/}
+                        {/*    type="datetime-local"*/}
+                        {/*    value={values.duration}*/}
+                        {/*    id="duration"*/}
+                        {/*    name="duration"*/}
+                        {/*    className="inputs"*/}
+                        {/*/> */}
                         <input
                             onChange={(ev) => this.handleChange(ev, 'duration')}
                             onBlur={this.inputValidate}

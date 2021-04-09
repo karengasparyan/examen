@@ -153,3 +153,34 @@ button[disabled]{
   font-size: 16px;
   font-weight: bold;
 }
+
+.tabButtons {
+  background-color: var(--blue);
+  color: white;
+  padding: 12px 26px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.5s;
+  border: solid 2px var(--blue);
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    transition: 0.5s;
+    background-color: white;
+    color: var(--blue);
+    border: solid 2px var(--blue);
+  }
+}
+
+.active {
+  background-color: white;
+  color: var(--blue);
+}

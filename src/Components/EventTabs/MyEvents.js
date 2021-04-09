@@ -12,7 +12,7 @@ import {
     singleEventRequest, successEventRequest
 } from "../../store/actions/events";
 import {withRouter} from "react-router-dom";
-import memoizeOne from "memoize-one";
+import moment from 'moment';
 
 class MyEvents extends Component {
     constructor(props) {
@@ -171,17 +171,22 @@ class MyEvents extends Component {
                             <p>{ev.limit}</p>
                             <span>Status</span>
                             <p>{ev.status}</p>
+                            <span>Duration</span>
+                            {/*<p>{moment(ev.duration).format('MM/DD/YYYY hh:mm')}</p>*/}
+                            <p>{ev.duration} min</p>
+                            <span>Date</span>
+                            <p>{ev.date}</p>
                             <span>EventId</span>
                             <p>{ev._id}</p>
                             {AllEvents && <Fragment>
-                             <button
-                                onClick={() => this.sendAddEventRequest(userId, ev._id)}
-                                className="buttons"
-                            >Add to my page</button>
-                                {/*{ev.members.some(m => m.userId === userId) ? <button*/}
-                                {/*    onClick={() => this.sendAddEventRequest(userId, ev._id)}*/}
-                                {/*    className="buttons"*/}
-                                {/*>Add to my page</button> : <button disabled>This event my followed</button>}*/}
+                                 <button
+                                    onClick={() => this.sendAddEventRequest(userId, ev._id)}
+                                    className="buttons"
+                                >Add to my page</button>
+                                {/*{!_.isEmpty(ev.members) && ev.members.some(m => m.userId !== ev.userId._id) ? <button*/}
+                                {/*    disabled>This event my followed</button> : <button*/}
+                                {/*        onClick={() => this.sendAddEventRequest(userId, ev._id)}*/}
+                                {/*        className="buttons">Add to my page</button>}*/}
                             </Fragment>}
                             {FollowEvents && <button
                                 onClick={() => this.deleteMyFollow(userId, ev._id)}

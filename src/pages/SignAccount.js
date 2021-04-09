@@ -6,7 +6,7 @@ import _ from "lodash";
 import Account from "../helpers/Account";
 import {allEventRequest, allMyEventRequest, singleEventRequest} from "../store/actions/events";
 import MyEvents from "../Components/EventTabs/MyEvents";
-import AllEvents from "../Components/EventTabs/AllEvents";
+import classNames from "classnames";
 
 class SignIn extends Component {
     constructor(props) {
@@ -46,10 +46,26 @@ class SignIn extends Component {
                     <div className="eventsTabsContainer">
                         <h1>Events</h1>
 
-                        <button className="buttons" onClick={() => this.handleChangeTabs('MyEvents')}>My events</button>
-                        <button className="buttons" onClick={() => this.handleChangeTabs('AllEvents')}>All events</button>
-                        <button className="buttons" onClick={() => this.handleChangeTabs('FollowEvents')}>Follow events</button>
-                        <button className="buttons" onClick={() => this.handleChangeTabs('FollowRequest')}>Follow request</button>
+                        <button
+                            className={classNames('buttons', changedTab === 'MyEvents' && 'active')}
+                            onClick={() => this.handleChangeTabs('MyEvents')}>
+                            My events
+                        </button>
+                        <button
+                            className={classNames('buttons', changedTab === 'AllEvents' && 'active')}
+                            onClick={() => this.handleChangeTabs('AllEvents')}>
+                            All events
+                        </button>
+                        <button
+                            className={classNames('buttons', changedTab === 'FollowEvents' && 'active')}
+                            onClick={() => this.handleChangeTabs('FollowEvents')}>
+                            Follow events
+                        </button>
+                        <button
+                            className={classNames('buttons', changedTab === 'FollowRequest' && 'active')}
+                            onClick={() => this.handleChangeTabs('FollowRequest')}>
+                            Follow request
+                        </button>
 
                         {changedTab === 'MyEvents' && <MyEvents userId={user._id}/>}
                         {changedTab === 'AllEvents' && <MyEvents eventTab="AllEvents" userId={user._id}/>}
