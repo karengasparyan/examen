@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import _ from 'lodash';
 import {allEventRequest} from "../../store/actions/events";
@@ -15,10 +15,11 @@ class AllEvents extends Component {
         return (
             <div>
                 <h1>All Events</h1>
-                {allEvents?.map(ev => <>
+                {allEvents?.map(ev => <Fragment key={ev._id}>
                     <div className="eventsContainer">
                         <div>
                             {ev.image.map(i => <img
+                                key={i}
                                 width={180}
                                 src={`http://localhost:4000/eventImage/folder_${ev._id}/${i}`}
                                 alt="image"/>)}
@@ -36,7 +37,7 @@ class AllEvents extends Component {
                     </div>
                     <button className="buttons">follow</button>
                     <hr/>
-                </>)}
+                </Fragment>)}
             </div>
         );
     }

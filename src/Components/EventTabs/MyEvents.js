@@ -12,17 +12,22 @@ import {
     singleEventRequest, successEventRequest
 } from "../../store/actions/events";
 import {withRouter} from "react-router-dom";
-import moment from 'moment';
+import axios from "axios";
+
+const API_KEY = 'AIzaSyDLkUgqCvW9ygczKIdWY-nfIMVcxzO2lxk';
 
 class MyEvents extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            myLocation: {},
+            eventLocation: []
+        };
         this.intervalRequest = null;
     }
 
-    componentDidMount() {
-        const {userId, eventTab} = this.props;
+ async componentDidMount() {
+        const {userId, eventTab, myEvents} = this.props;
         this.props.allMyEventRequest(userId, null, 1);
         if (eventTab === 'AllEvents') {
             this.props.allEventRequest(userId, null, 1);
@@ -36,6 +41,34 @@ class MyEvents extends Component {
         if (eventTab === 'FollowEvents') {
             this.props.getSuccessEventRequest(userId);
         }
+     await this.getCoordinates(myEvents)
+ }
+
+    getDistanceFromLatLonInKm = (latitude1,longitude1,latitude2,longitude2) => {
+        const p = 0.017453292519943295;
+        const c = Math.cos;
+        const a = 0.5 - c((latitude2 - latitude1) * p)/2 +
+            c(latitude1 * p) * c(latitude2 * p) *
+            (1 - c((longitude2 - longitude1) * p))/2;
+        const R = 6371;
+
+        return 2 * R * Math.asin(Math.sqrt(a)) + 'km';
+    }
+
+    getCoordinates = async (myEvents) => {
+        let myLocation = {};
+        await navigator.geolocation.getCurrentPosition((position) => {
+            myLocation = {
+                lng: position.coords.longitude,
+                lat: position.coords.latitude,
+            }
+        });
+        await Promise.all(myEvents.map(async (e) => {
+            const {data} = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${e.address}&key=${API_KEY}`);
+            const location = _.get(data, ['results', '0', 'geometry', 'location']);
+            e.distance = this.getDistanceFromLatLonInKm(myLocation.lat, myLocation.lng, location.lat, location.lng)
+        }));
+       this.setState({myEvents})
     }
 
     componentWillUnmount() {
@@ -106,7 +139,7 @@ class MyEvents extends Component {
     render() {
         const {
             eventTab,
-            myEvents,
+            // myEvents,
             allEvents,
             myEventPagesCount,
             allEventPagesCount,
@@ -114,6 +147,8 @@ class MyEvents extends Component {
             pendingEvents,
             userId,
         } = this.props;
+
+        const {myEvents} = this.state;
 
         let renderData = [];
         let MyEvents = false;
@@ -142,7 +177,6 @@ class MyEvents extends Component {
                 MyEvents = true;
                 break;
         }
-        console.log(renderData);
         return (
             <div>
                 {MyEvents && <h1>My Events</h1>}
@@ -151,8 +185,8 @@ class MyEvents extends Component {
                 {FollowRequest && <h1>Follow Request</h1>}
                 {requestIndicator !== '' && <p className="errors">{requestIndicator}</p>}
                 {MyEvents && <button className="buttons" onClick={this.handleClickAddEvent}>Add event</button>}
-                {renderData.map(ev => <>
-                    <div key={ev._id} className="eventsContainer">
+                {renderData?.map(ev => <Fragment key={ev._id}>
+                    <div className="eventsContainer">
                         <div>
                             {ev.image.map(i => <img
                                 key={i}
@@ -174,6 +208,10 @@ class MyEvents extends Component {
                             <span>Duration</span>
                             {/*<p>{moment(ev.duration).format('MM/DD/YYYY hh:mm')}</p>*/}
                             <p>{ev.duration} min</p>
+                            <span>Address</span>
+                            <p style={{color: "red"}}>{ev.address}</p>
+                            <span>Distance</span>
+                            <p style={{color: "red"}}>{ev.distance}</p>
                             <span>Date</span>
                             <p>{ev.date}</p>
                             <span>EventId</span>
@@ -199,7 +237,7 @@ class MyEvents extends Component {
                         </div>}
                         {FollowRequest && <div style={{border: 'solid 2px red'}}>
                             <h3>This event wants to subscribe users</h3>
-                            {ev.members.filter(f => f.status !== 'success').map(member => <div>
+                            {ev.members.filter(f => f.status !== 'success').map(member => <div key={member.email}>
                                 <p>{member.email}</p>
                                 <p>{member.status}</p>
                                 <button
@@ -216,7 +254,7 @@ class MyEvents extends Component {
                         </div>}
                     </div>
                     <hr/>
-                </>)}
+                </Fragment>)}
             </div>
         );
     }

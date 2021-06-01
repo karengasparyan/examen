@@ -7,13 +7,17 @@ import Account from "../helpers/Account";
 import {allEventRequest, allMyEventRequest, singleEventRequest} from "../store/actions/events";
 import MyEvents from "../Components/EventTabs/MyEvents";
 import classNames from "classnames";
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:4000";
 
 class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            changedTab: 'MyEvents'
+            changedTab: 'MyEvents',
+            message: '',
         }
+        this.socket = socketIOClient(ENDPOINT);
     }
 
     exitAccount = () => {
@@ -25,13 +29,27 @@ class SignIn extends Component {
         this.setState({changedTab})
     };
 
+    handleChangeMessage = (ev) => {
+        this.setState({message: ev.target.value})
+    }
+
+    sendMessage = () => {
+        this.socket.emit('chat message', this.state.message);
+    }
+
     render() {
         const {user} = this.props;
-        const {changedTab} = this.state;
+        const {changedTab, message} = this.state;
         const image = _.get(user, ['picture', '0'], null);
-
         return (
             <WrapperSign>
+                <input
+                    placeholder="message"
+                    type="text"
+                    value={message}
+                    onChange={this.handleChangeMessage}
+                />
+                <button onClick={this.sendMessage}>send message</button>
                 <div className="profileContainer">
                     <div className="profileData">
                         <img width={200} src={`http://localhost:4000/userImage/folder_${user._id}/${image}`} alt="image"/>
@@ -81,6 +99,7 @@ class SignIn extends Component {
 
 const mapStateToProps = (state) => ({
     user: state.users.user,
+    myEvents: state.events.myEvents,
 });
 const mapDispatchToProps = {
     signInRequest,

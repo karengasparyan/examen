@@ -5,6 +5,7 @@ import _ from "lodash";
 import {addEventRequest, singleEventRequest, updateEventRequest} from "../store/actions/events";
 import Account from "../helpers/Account";
 import memoizeOne from "memoize-one";
+import axios from "axios";
 
 class AddEvent extends Component {
     constructor(props) {
@@ -19,10 +20,12 @@ class AddEvent extends Component {
                 // status: '',
                 duration: '',
                 file: '',
+                address: ''
             },
             fileAttr: [],
         }
     }
+
 
     handleChange = (ev, i) => {
         const values = {...this.state.values, [i]: ev.target.value};
@@ -62,6 +65,7 @@ class AddEvent extends Component {
                     errors.limit = this.props.error.limit;
                     // errors.status = this.props.error.status;
                     errors.duration = this.props.error.duration;
+                    errors.address = this.props.error.address;
                     errors.file = 'The title field is mandatory.';
                     this.setState({errors})
                 }
@@ -97,6 +101,7 @@ class AddEvent extends Component {
                     errors.limit = this.props.error.limit;
                     // errors.status = this.props.error.status;
                     errors.duration = this.props.error.duration;
+                    errors.address = this.props.error.address;
                     errors.file = 'The title field is mandatory.';
                     this.setState({errors})
                 }
@@ -126,6 +131,9 @@ class AddEvent extends Component {
             //     break;
             case 'duration':
                 errors.status = value.length ? '' : 'Duration is required';
+                break;
+            case 'address':
+                errors.address = value.length ? '' : 'Address is required';
                 break;
             case 'file':
                 errors.file = fileAttr && _.isEmpty(fileAttr) ? 'Image is required' : '';
@@ -167,6 +175,7 @@ class AddEvent extends Component {
             values.limit = singleEvent.limit;
             // values.status = singleEvent.status;
             values.duration = singleEvent.duration;
+            values.address = singleEvent.address;
             values.previewDeleteImages = singleEvent.image;
             this.setState({values})
         }
@@ -181,8 +190,6 @@ class AddEvent extends Component {
         if (edit) {
             this.initEvent(singleEvent)
         }
-
-        console.log(values);
         return (
             <WrapperSign>
                 <div className="formContainer">
@@ -252,6 +259,17 @@ class AddEvent extends Component {
                             className="inputs"
                         />
                         <p className="errors">{errors.duration}</p>
+                        <label className="labels" htmlFor="duration">Address</label>
+                        <input
+                            onChange={(ev) => this.handleChange(ev, 'address')}
+                            onBlur={this.inputValidate}
+                            type="text"
+                            value={values.address}
+                            id="address"
+                            name="address"
+                            className="inputs"
+                        />
+                        <p className="errors">{errors.address}</p>
                         <label className="labels" htmlFor="image">Upload image</label>
                         <input
                             type="file"
@@ -264,7 +282,7 @@ class AddEvent extends Component {
                             }}
                         />
                         <div className="previewImages">
-                            {fileAttr?.map((f, i) => <div className="imageContainer">
+                            {fileAttr?.map((f, i) => <div key={f.path} className="imageContainer">
                                 <img
                                     key={i}
                                     className="imagePreview"
@@ -279,9 +297,8 @@ class AddEvent extends Component {
                             </div>)}
                         </div>
                         {edit && <div className="previewImages">
-                            {singleEvent.image?.map((i) => <div className="imageContainer">
+                            {singleEvent.image?.map((i) => <div key={i} className="imageContainer">
                                 <img
-                                    key={i}
                                     className="imagePreview"
                                     src={`http://localhost:4000/eventImage/folder_${singleEvent._id}/${i}`}
                                     alt={`image${i}`}
